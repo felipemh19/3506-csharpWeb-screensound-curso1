@@ -1,22 +1,33 @@
-﻿using ScreenSound.Modelos;
+﻿using ScreenSound.Banco;
+using ScreenSound.Modelos;
 
 namespace ScreenSound.Menus;
 
 internal class MenuRegistrarMusica : Menu
 {
-    public override void Executar(Dictionary<string, Artista> artistasRegistrados)
+    private readonly DAL<Artista> _artistaDAL;
+
+    public MenuRegistrarMusica(DAL<Artista> artistaDAL)
     {
-        base.Executar(artistasRegistrados);
+        _artistaDAL = artistaDAL;
+    }
+
+    public override void Executar()
+    {
+        base.Executar();
         ExibirTituloDaOpcao("Registro de músicas");
         Console.Write("Digite o artista cuja música deseja registrar: ");
         string nomeDoArtista = Console.ReadLine()!;
-        if (artistasRegistrados.ContainsKey(nomeDoArtista))
+        var artistaRecuperado = _artistaDAL.RecuperarPor(x => x.Nome.Equals(nomeDoArtista));
+        if (artistaRecuperado is not null)
         {
             Console.Write("Agora digite o título da música: ");
             string tituloDaMusica = Console.ReadLine()!;
-            Artista artista = artistasRegistrados[nomeDoArtista];
-            artista.AdicionarMusica(new Musica(tituloDaMusica));
+            Console.Write("Agora digite o ano de lançamento da música: ");
+            string anoLancamento = Console.ReadLine()!;
+            artistaRecuperado.AdicionarMusica(new Musica(tituloDaMusica) { AnoLancamento = Convert.ToInt32(anoLancamento)});
             Console.WriteLine($"A música {tituloDaMusica} de {nomeDoArtista} foi registrada com sucesso!");
+            _artistaDAL.Atualizar(artistaRecuperado);
             Thread.Sleep(4000);
             Console.Clear();
         }

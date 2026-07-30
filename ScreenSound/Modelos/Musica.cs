@@ -1,6 +1,6 @@
 ﻿namespace ScreenSound.Modelos;
 
-internal class Musica
+public class Musica : Base
 {
     public Musica(string nome)
     {
@@ -8,11 +8,13 @@ internal class Musica
     }
 
     public string Nome { get; set; }
-    public int Id { get; set; }
+    public int? AnoLancamento { get; set; }
+    public int? ArtistaId { get; set; }
+    public virtual Artista? Artista { get; set; }
 
     public void ExibirFichaTecnica()
     {
-        Console.WriteLine($"Nome: {Nome}");
+        Console.WriteLine($"Nome: {Nome} - Artista: {Artista?.Nome} - Ano: {AnoLancamento}");
       
     }
 
