@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="ScreenSound.Shared.Modelos/ScreenSound.Shared.Modelos.csproj" />
+  <Project Path="ScreenSound/ScreenSound.csproj" />
+  <Project Path="ScreenSoundAPI/ScreenSound.API.csproj" />
+</Solution>
