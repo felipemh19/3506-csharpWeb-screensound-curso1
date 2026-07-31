@@ -1,6 +1,4 @@
-﻿using ScreenSound.Modelos;
-
-namespace ScreenSound.Menus;
+﻿namespace ScreenSound.Menus;
 
 internal class MenuSair : Menu
 {
