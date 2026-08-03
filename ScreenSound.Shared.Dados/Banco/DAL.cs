@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace ScreenSound.Banco;
+namespace ScreenSound.Shared.Dados.Banco;
 
 public class DAL<T> 
     where T : class

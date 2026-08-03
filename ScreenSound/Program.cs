@@ -1,5 +1,5 @@
-﻿using ScreenSound.Banco;
-using ScreenSound.Menus;
+﻿using ScreenSound.Menus;
+using ScreenSound.Shared.Dados.Banco;
 using ScreenSound.Shared.Modelos.Modelos;
 
 var context = new ScreenSoundContext();

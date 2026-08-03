@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ScreenSound.Shared.Modelos.Modelos;
 
-namespace ScreenSound.Banco;
+namespace ScreenSound.Shared.Dados.Banco;
 
 public class ScreenSoundContext : DbContext
 {
