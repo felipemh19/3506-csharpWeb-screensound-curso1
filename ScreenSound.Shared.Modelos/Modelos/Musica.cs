@@ -21,6 +21,9 @@ public class Musica : Base
     public override string ToString()
     {
         return @$"Id: {Id}
-        Nome: {Nome}";
+        Nome: {Nome}
+        Ano de lançamento: {AnoLancamento}
+        Artista: {Artista?.Nome}";
+        
     }
 }

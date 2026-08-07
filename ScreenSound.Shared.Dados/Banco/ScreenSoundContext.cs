@@ -9,9 +9,7 @@ public class ScreenSoundContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder
-            .UseSqlServer(_connectionString).
-            UseLazyLoadingProxies();
+        optionsBuilder.UseSqlServer(_connectionString);
     }
 
     public DbSet<Artista> Artistas { get; set; }

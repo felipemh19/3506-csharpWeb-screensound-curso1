@@ -16,7 +16,7 @@ public class DAL<T>
 
     public IEnumerable<T> Listar()
     {
-        return _dbSet.ToList();
+        return [.. _dbSet];
     }
 
     public void Adicionar(T objeto)
@@ -44,6 +44,6 @@ public class DAL<T>
 
     public IEnumerable<T> ListarPor(Func<T, bool> condicao)
     {
-        return _dbSet.Where(condicao).ToList();
+        return [.. _dbSet.Where(condicao)];
     }
 }
