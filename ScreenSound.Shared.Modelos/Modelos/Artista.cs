@@ -7,6 +7,14 @@ public class Artista : Base
     public string Bio { get; set; } = string.Empty;
     public virtual ICollection<Musica> Musicas { get; set; } = [];
 
+    public Artista() { }
+
+    public Artista(string nome, string bio)
+    {
+        Nome = nome;
+        Bio = bio;
+    }
+
     public void AdicionarMusica(Musica musica)
     {
         Musicas.Add(musica);
