@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ScreenSound.API.Converters;
+using ScreenSound.API.Requests.Musica;
 using ScreenSound.Shared.Dados.Banco;
 using ScreenSound.Shared.Modelos.Modelos;
 
@@ -10,7 +12,10 @@ public static class MusicasExtensions
     {
         app.MapGet("/Musicas", ([FromServices] DAL<Musica> dal) =>
         {
-            return Results.Ok(dal.Listar());
+            var musicas = dal.Listar();
+
+            var response = MusicaConverter.EntityListToResponseList(musicas);
+            return Results.Ok(response);
         });
 
         app.MapGet("/Musicas/{nome}", ([FromServices] DAL<Musica> dal, string nome) =>
@@ -20,27 +25,37 @@ public static class MusicasExtensions
             if (musica is null)
                 return Results.NotFound();
 
-            return Results.Ok(musica);
+            var response = MusicaConverter.EntityToResponse(musica);
+            return Results.Ok(response);
         });
 
-        app.MapPost("/Musicas", ([FromServices] DAL<Musica> dal, [FromBody] Musica musica) =>
+        app.MapPost("/Musicas", ([FromServices] DAL<Musica> dal, [FromBody] MusicaRequest musicaRequest) =>
         {
+            var musica = new Musica(musicaRequest.Nome, musicaRequest.AnoLancamento, musicaRequest.ArtistaId);
+
             dal.Adicionar(musica);
-            return Results.Created($"/Musicas/{musica.Nome}", musica);
+
+            var response = MusicaConverter.EntityToResponse(musica);
+            return Results.Created($"/Musicas/{response.Nome}", response);
         });
 
-        app.MapPut("/Musicas/{id}", ([FromServices] DAL<Musica> dal, int id, [FromBody] Musica musica) =>
+        app.MapPut("/Musicas/{id}", ([FromServices] DAL<Musica> dal, int id, [FromBody] MusicaRequestEdit musicaRequestEdit) =>
         {
+            if (id != musicaRequestEdit.Id)
+                return Results.BadRequest();
+
             var musicaExistente = dal.RecuperarPor(m => m.Id == id);
 
             if (musicaExistente is null)
                 return Results.NotFound();
 
-            musicaExistente.Nome = musica.Nome;
-            musicaExistente.AnoLancamento = musica.AnoLancamento;
+            musicaExistente.Nome = musicaRequestEdit.Nome;
+            musicaExistente.AnoLancamento = musicaRequestEdit.AnoLancamento;
 
             dal.Atualizar(musicaExistente);
-            return Results.Ok(musicaExistente);
+
+            var response = MusicaConverter.EntityToResponse(musicaExistente);
+            return Results.Ok(response);
         });
 
         app.MapDelete("/Musicas/{id}", ([FromServices] DAL<Musica> dal, int id) =>

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ScreenSound.API.Requests;
+using ScreenSound.API.Converters;
+using ScreenSound.API.Requests.Artista;
+using ScreenSound.API.Responses;
 using ScreenSound.Shared.Dados.Banco;
 using ScreenSound.Shared.Modelos.Modelos;
 
@@ -11,7 +13,10 @@ public static class ArtistasExtensions
     {
         app.MapGet("/Artistas", ([FromServices] DAL<Artista> dal) =>
         {
-            return Results.Ok(dal.Listar());
+            var artistas = dal.Listar();
+
+            var response = ArtistaConverter.EntityListToResponseList(artistas);
+            return Results.Ok(response);
         });
 
         app.MapGet("/Artistas/{nome}", ([FromServices] DAL<Artista> dal, string nome) =>
@@ -21,7 +26,8 @@ public static class ArtistasExtensions
             if (artista is null)
                 return Results.NotFound();
 
-            return Results.Ok(artista);
+            var response = ArtistaConverter.EntityToResponse(artista);
+            return Results.Ok(response);
         });
 
         app.MapPost("/Artistas", ([FromServices] DAL<Artista> dal, [FromBody] ArtistaRequest artistaRequest) =>
@@ -29,21 +35,27 @@ public static class ArtistasExtensions
             var artista = new Artista(artistaRequest.Nome, artistaRequest.Bio);
 
             dal.Adicionar(artista);
-            return Results.Created($"/Artistas/{artista.Nome}", artista);
+
+            var response = ArtistaConverter.EntityToResponse(artista);
+            return Results.Created($"/Artistas/{response.Nome}", response);
         });
 
-        app.MapPut("/Artistas/{id}", ([FromServices] DAL<Artista> dal, int id, [FromBody] Artista artista) =>
+        app.MapPut("/Artistas/{id}", ([FromServices] DAL<Artista> dal, int id, [FromBody] ArtistaRequestEdit artistaRequestEdit) =>
         {
+            if (id != artistaRequestEdit.Id)
+                return Results.BadRequest();
+
             var artistaExistente = dal.RecuperarPor(a => a.Id == id);
             if (artistaExistente is null)
                 return Results.NotFound();
 
-            artistaExistente.Nome = artista.Nome;
-            artistaExistente.Bio = artista.Bio;
-            artistaExistente.FotoPerfil = artista.FotoPerfil;
+            artistaExistente.Nome = artistaRequestEdit.Nome;
+            artistaExistente.Bio = artistaRequestEdit.Bio;
 
             dal.Atualizar(artistaExistente);
-            return Results.Ok(artistaExistente);
+
+            var response = ArtistaConverter.EntityToResponse(artistaExistente);
+            return Results.Ok(response);
         });
 
         app.MapDelete("/Artistas/{id}", ([FromServices] DAL<Artista> dal, int id) =>

@@ -7,6 +7,13 @@ public class Musica : Base
         Nome = nome;
     }
 
+    public Musica(string nome, int? anoLancamento, int? artistaId)
+    {
+        Nome = nome;
+        AnoLancamento = anoLancamento;
+        ArtistaId = artistaId;
+    }
+
     public string Nome { get; set; }
     public int? AnoLancamento { get; set; }
     public int? ArtistaId { get; set; }
@@ -14,8 +21,7 @@ public class Musica : Base
 
     public void ExibirFichaTecnica()
     {
-        Console.WriteLine($"Nome: {Nome} - Artista: {Artista?.Nome} - Ano: {AnoLancamento}");
-      
+        Console.WriteLine($"Nome: {Nome} - Artista: {Artista?.Nome} - Ano: {AnoLancamento}");      
     }
 
     public override string ToString()
