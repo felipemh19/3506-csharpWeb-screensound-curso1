@@ -37,7 +37,7 @@ public static class ArtistasExtensions
             dal.Adicionar(artista);
 
             var response = ArtistaConverter.EntityToResponse(artista);
-            return Results.Created($"/Artistas/{response.Nome}", response);
+            return Results.Created($"/Artistas/{response.Id}", response);
         });
 
         app.MapPut("/Artistas/{id}", ([FromServices] DAL<Artista> dal, int id, [FromBody] ArtistaRequestEdit artistaRequestEdit) =>

@@ -12,6 +12,15 @@ public class ScreenSoundContext : DbContext
         optionsBuilder.UseSqlServer(_connectionString);
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Musica>()
+            .HasMany(m => m.Generos)
+            .WithMany(g => g.Musicas)
+            .UsingEntity(j => j.ToTable("MusicasGeneros"));
+    }
+
     public DbSet<Artista> Artistas { get; set; }
     public DbSet<Musica> Musicas { get; set; }
+    public DbSet<Genero> Generos { get; set; }
 }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ScreenSound.Shared.Dados.Banco;
 
@@ -10,9 +11,11 @@ using ScreenSound.Shared.Dados.Banco;
 namespace ScreenSound.Migrations
 {
     [DbContext(typeof(ScreenSoundContext))]
-    partial class ScreenSoundContextModelSnapshot : ModelSnapshot
+    [Migration("20260817111451_AdicaoTabGenero")]
+    partial class AdicaoTabGenero
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,21 +23,6 @@ namespace ScreenSound.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("GeneroMusica", b =>
-                {
-                    b.Property<int>("GenerosId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MusicasId")
-                        .HasColumnType("int");
-
-                    b.HasKey("GenerosId", "MusicasId");
-
-                    b.HasIndex("MusicasId");
-
-                    b.ToTable("MusicasGeneros", (string)null);
-                });
 
             modelBuilder.Entity("ScreenSound.Shared.Modelos.Modelos.Artista", b =>
                 {
@@ -103,21 +91,6 @@ namespace ScreenSound.Migrations
                     b.HasIndex("ArtistaId");
 
                     b.ToTable("Musicas");
-                });
-
-            modelBuilder.Entity("GeneroMusica", b =>
-                {
-                    b.HasOne("ScreenSound.Shared.Modelos.Modelos.Genero", null)
-                        .WithMany()
-                        .HasForeignKey("GenerosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ScreenSound.Shared.Modelos.Modelos.Musica", null)
-                        .WithMany()
-                        .HasForeignKey("MusicasId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("ScreenSound.Shared.Modelos.Modelos.Musica", b =>

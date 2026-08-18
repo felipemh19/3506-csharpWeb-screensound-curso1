@@ -31,12 +31,16 @@ public static class MusicasExtensions
 
         app.MapPost("/Musicas", ([FromServices] DAL<Musica> dal, [FromBody] MusicaRequest musicaRequest) =>
         {
-            var musica = new Musica(musicaRequest.Nome, musicaRequest.AnoLancamento, musicaRequest.ArtistaId);
+            var musica = new Musica(
+                musicaRequest.Nome, 
+                musicaRequest.AnoLancamento, 
+                musicaRequest.ArtistaId, 
+                GeneroConverter.GeneroRequestConverter(musicaRequest.Generos) ?? []);
 
             dal.Adicionar(musica);
 
             var response = MusicaConverter.EntityToResponse(musica);
-            return Results.Created($"/Musicas/{response.Nome}", response);
+            return Results.Created($"/Musicas/{response.Id}", response);
         });
 
         app.MapPut("/Musicas/{id}", ([FromServices] DAL<Musica> dal, int id, [FromBody] MusicaRequestEdit musicaRequestEdit) =>
