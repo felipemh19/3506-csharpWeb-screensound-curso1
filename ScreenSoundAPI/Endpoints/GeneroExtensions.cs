@@ -38,5 +38,15 @@ public static class GeneroExtensions
             var response = GeneroConverter.EntityToResponse(genero);
             return Results.Created($"/generos/{genero.Id}", response);
         });
+
+        app.MapDelete("/generos/{id}", ([FromServices] DAL<Genero> dal, int id) =>
+        {
+            var genero = dal.RecuperarPor(x => x.Id == id);
+            if (genero is null)
+                return Results.NotFound();
+
+            dal.Deletar(genero);
+            return Results.NoContent();
+        });
     }
 }

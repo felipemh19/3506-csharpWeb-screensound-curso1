@@ -29,13 +29,13 @@ public static class MusicasExtensions
             return Results.Ok(response);
         });
 
-        app.MapPost("/Musicas", ([FromServices] DAL<Musica> dal, [FromBody] MusicaRequest musicaRequest) =>
+        app.MapPost("/Musicas", ([FromServices] DAL<Musica> dal, [FromServices] DAL<Genero> dalGenero, [FromBody] MusicaRequest musicaRequest) =>
         {
             var musica = new Musica(
                 musicaRequest.Nome, 
                 musicaRequest.AnoLancamento, 
                 musicaRequest.ArtistaId, 
-                GeneroConverter.GeneroRequestConverter(musicaRequest.Generos) ?? []);
+                GeneroConverter.GeneroRequestConverter(musicaRequest.Generos, dalGenero) ?? []);
 
             dal.Adicionar(musica);
 
