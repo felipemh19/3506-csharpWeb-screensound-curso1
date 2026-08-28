@@ -1,6 +1,7 @@
 <Solution>
   <Project Path="ScreenSound.Shared.Dados/ScreenSound.Shared.Dados.csproj" Id="066dce81-4822-41c1-8aee-67c2cffd4a30" />
   <Project Path="ScreenSound.Shared.Modelos/ScreenSound.Shared.Modelos.csproj" />
+  <Project Path="ScreenSound.Web/ScreenSound.Web.csproj" Id="831ae49c-727b-487b-b7a7-499a61d39b4c" />
   <Project Path="ScreenSound/ScreenSound.csproj" />
   <Project Path="ScreenSoundAPI/ScreenSound.API.csproj" />
 </Solution>
