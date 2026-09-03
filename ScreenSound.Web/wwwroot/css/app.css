@@ -117,7 +117,7 @@ code {
 div.mud-main-content.main-content {
     background: linear-gradient(180deg, #96F 0%, #000 100%) !important;
     margin-top: 64px;
-    height: 100%;
+    min-height: 100dvh;
 }
 
 header.mud-appbar.mud-appbar-fixed-top.mud-elevation-2.mud-theme-surface {
