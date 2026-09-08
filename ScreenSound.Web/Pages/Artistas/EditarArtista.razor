@@ -1,5 +1,80 @@
-﻿<h3>EditarArtista</h3>
+﻿@page "/artistas/editar/{NomeArtista}"
+@inject ArtistaAPI artistaAPI
+@inject NavigationManager navigationManager
+
+<MudPaper Class="px-8 pt-2 pb-4 mx-12 my-8">
+
+    <MudText Class="mt-8" Typo="Typo.h4">Cadastro de artistas</MudText>
+
+    <MudForm>
+        <MudTextField Class="mt-4" T="string" Label="Nome"
+                      @bind-Value="nome"
+                      Variant="Variant.Outlined"
+                      Required="true"
+                      RequiredError="Campo obrigatório" />
+
+        <MudTextField Class="mt-4" T="string" Label="Bio"
+                      @bind-Value="bio"
+                      Variant="Variant.Outlined"
+                      Lines="3"
+                      Required="true"
+                      RequiredError="Campo obrigatório" />
+
+        <div class="mt-4">
+            <MudButton Variant="Variant.Outlined"
+                       Color="Color.Primary"
+                       Class="ml-auto"
+                       OnClick="@Cancel">
+                Cancelar
+            </MudButton>
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Error"
+                       Class="ml-auto"
+                       OnClick="@DeleteArtistaAsync">
+                Excluir
+            </MudButton>
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       Class="ml-auto"
+                       OnClick="@UpdateArtistaAsync">
+                Salvar
+            </MudButton>
+        </div>
+    </MudForm>
+</MudPaper>
 
 @code {
+    private string? nome;
+    private string? bio;
 
+    [Parameter]
+    public string? NomeArtista { get; set; }
+    public ArtistaResponse? Artista { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Artista = await artistaAPI.GetArtistaByNomeAsync(NomeArtista!);
+
+        if (Artista is not null)
+        {
+            nome = Artista.Nome;
+            bio = Artista.Bio;
+        }
+    }
+
+    private async Task UpdateArtistaAsync()
+    {
+        await artistaAPI.UpdateAsystaAsync(new ArtistaRequestEdit(Artista!.Id, nome!, bio!));
+    }
+
+    private async Task DeleteArtistaAsync()
+    {        
+        await artistaAPI.DeleteArtistaAsync(Artista!.Id);
+        navigationManager.NavigateTo("/Artistas");
+    }
+
+    private void Cancel()
+    {
+        navigationManager.NavigateTo("/Artistas");
+    }
 }

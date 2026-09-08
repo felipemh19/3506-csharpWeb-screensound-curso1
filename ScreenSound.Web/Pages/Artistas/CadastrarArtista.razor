@@ -1,8 +1,8 @@
-﻿@page "/Artistas/Cadastrar"
+﻿@page "/artistas/cadastrar"
 @inject ArtistaAPI artistaAPI
 @inject NavigationManager navigationManager
 
-<MudPaper Class="px-8 pt-2 pb-4 mx-12 my-8" Justify="Justify.Center">
+<MudPaper Class="px-8 pt-2 pb-4 mx-12 my-8">
 
     <MudText Class="mt-8" Typo="Typo.h4">Cadastro de artistas</MudText>
 
@@ -20,11 +20,17 @@
                       Required="true"
                       RequiredError="Campo obrigatório" />
 
-        <div class="d-flex align-content-center justify-content-between mt-4">
+        <div class="mt-4">
+            <MudButton Variant="Variant.Outlined"
+                       Color="Color.Primary"
+                       Class="ml-auto"
+                       OnClick="@Cancel">
+                Cancelar
+            </MudButton>
             <MudButton Variant="Variant.Filled"            
                        Color="Color.Primary"
                        Class="ml-auto"
-                       OnClick="@CreateArtista">
+                       OnClick="@CreateArtistaAsync">
                 Cadastrar
             </MudButton>
         </div>
@@ -35,10 +41,15 @@
     private string? nome;
     private string? bio;
 
-    private async Task CreateArtista()
+    private async Task CreateArtistaAsync()
     {
         var request = new ArtistaRequest(nome!, bio!);
-        await artistaAPI.CreateArtista(request);
+        await artistaAPI.CreateArtistaAsync(request);
+        navigationManager.NavigateTo("/Artistas");
+    }
+
+    private void Cancel()
+    {
         navigationManager.NavigateTo("/Artistas");
     }
 }
