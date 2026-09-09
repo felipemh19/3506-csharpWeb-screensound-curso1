@@ -20,26 +20,23 @@
                       Required="true"
                       RequiredError="Campo obrigatório" />
 
-        <div class="mt-4">
+        <MudStack Row="true" Class="d-flex justify-end mt-4">
             <MudButton Variant="Variant.Outlined"
                        Color="Color.Primary"
-                       Class="ml-auto"
                        OnClick="@Cancel">
                 Cancelar
             </MudButton>
             <MudButton Variant="Variant.Filled"
                        Color="Color.Error"
-                       Class="ml-auto"
                        OnClick="@DeleteArtistaAsync">
                 Excluir
             </MudButton>
             <MudButton Variant="Variant.Filled"
                        Color="Color.Primary"
-                       Class="ml-auto"
                        OnClick="@UpdateArtistaAsync">
                 Salvar
             </MudButton>
-        </div>
+        </MudStack>
     </MudForm>
 </MudPaper>
 
