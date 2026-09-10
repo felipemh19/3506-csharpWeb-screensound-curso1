@@ -2,23 +2,49 @@
 @using ScreenSound.Web.Components
 @inject ArtistaAPI artistaAPI
 
-@if (artistas is not null)
+<MudStack Class="mt-4 mb-4" Row="true" Justify="Justify.SpaceBetween">
+    <MudText Class="mb-4" Typo="Typo.h4">Artistas cadastrados</MudText>
+    <MudPagination Count="@totalPages" SelectedChanged="PageChanged"></MudPagination>
+</MudStack>
+
+@if (artistasPerPage is not null)
 {
     <MudGrid>
-        @foreach (var artista in artistas)
+        @foreach (var artista in artistasPerPage)
         {
             <MudItem xs="3">                
                 <CardArtista Artista="artista" />
             </MudItem>
         }
-    </MudGrid>    
+    </MudGrid> 
 }
 
 @code {
     private ICollection<ArtistaResponse>? artistas;
+    private ICollection<ArtistaResponse>? artistasPerPage;
+    private int size = 8;
+    private int totalItems;
+    private int totalPages;
 
     protected override async Task OnInitializedAsync()
     {
         artistas = await artistaAPI.GetArtistasAsync();
+
+        if (artistas is not null)
+        {
+            artistas = artistas.OrderByDescending(a => a.Id).ToList();
+            totalItems = artistas.Count;
+            totalPages = (int)Math.Ceiling((double)totalItems / size);
+            this.PageChanged(1);
+        }
+    }
+
+    private void PageChanged(int page)
+    {
+        if (artistas is not null)
+        {
+            var index = page - 1;
+            artistasPerPage = artistas.Skip(index * size).Take(size).ToList();
+        }
     }
 }

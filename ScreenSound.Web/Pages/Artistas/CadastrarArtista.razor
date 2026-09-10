@@ -13,7 +13,7 @@
                       Required="true"
                       RequiredError="Campo obrigatório" />
 
-        <MudTextField Class="mt-4" T="string" Label="Bio"
+        <MudTextField Class="mt-4" T="string" Label="Biografia"
                       @bind-Value="bio"
                       Variant="Variant.Outlined"
                       Lines="3"
@@ -43,7 +43,7 @@
     {
         var request = new ArtistaRequest(nome!, bio!);
         await artistaAPI.CreateArtistaAsync(request);
-        navigationManager.NavigateTo("/Artistas");
+        navigationManager.NavigateTo($"/artistas/editar/{nome}");
     }
 
     private void Cancel()
