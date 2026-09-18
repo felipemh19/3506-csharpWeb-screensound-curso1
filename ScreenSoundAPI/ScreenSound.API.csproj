@@ -19,7 +19,12 @@
 	
   <ItemGroup>
     <ProjectReference Include="..\ScreenSound.Shared.Dados\ScreenSound.Shared.Dados.csproj" />
+    <ProjectReference Include="..\ScreenSound.Shared.DTOs\ScreenSound.Shared.DTOs.csproj" />
     <ProjectReference Include="..\ScreenSound.Shared.Modelos\ScreenSound.Shared.Modelos.csproj" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <Folder Include="wwwroot\FotosPerfil\" />
   </ItemGroup>
 
 </Project>

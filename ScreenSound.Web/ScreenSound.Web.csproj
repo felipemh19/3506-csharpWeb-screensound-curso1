@@ -18,4 +18,8 @@
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ScreenSound.Shared.DTOs\ScreenSound.Shared.DTOs.csproj" />
+  </ItemGroup>
+
 </Project>

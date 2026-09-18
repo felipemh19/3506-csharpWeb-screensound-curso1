@@ -1,4 +1,4 @@
-﻿using ScreenSound.API.Responses;
+﻿using ScreenSound.Shared.DTOs.Responses;
 using ScreenSound.Shared.Modelos.Modelos;
 
 namespace ScreenSound.API.Converters;

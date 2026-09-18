@@ -1,6 +1,6 @@
-﻿using ScreenSound.API.Requests.Genero;
-using ScreenSound.API.Responses;
-using ScreenSound.Shared.Dados.Banco;
+﻿using ScreenSound.Shared.Dados.Banco;
+using ScreenSound.Shared.DTOs.Requests.Genero;
+using ScreenSound.Shared.DTOs.Responses;
 using ScreenSound.Shared.Modelos.Modelos;
 
 namespace ScreenSound.API.Converters;

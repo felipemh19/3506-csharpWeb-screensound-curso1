@@ -43,6 +43,7 @@
 @code {
     private string? nome;
     private string? bio;
+    private string? fotoPerfil;
 
     [Parameter]
     public string? NomeArtista { get; set; }
@@ -56,12 +57,13 @@
         {
             nome = Artista.Nome;
             bio = Artista.Bio;
+            fotoPerfil = Artista.FotoPerfil;
         }
     }
 
     private async Task UpdateArtistaAsync()
     {
-        await artistaAPI.UpdateAsystaAsync(new ArtistaRequestEdit(Artista!.Id, nome!, bio!));
+        await artistaAPI.UpdateAsystaAsync(new ArtistaRequestEdit(Artista!.Id, nome!, bio!, fotoPerfil));
     }
 
     private async Task DeleteArtistaAsync()

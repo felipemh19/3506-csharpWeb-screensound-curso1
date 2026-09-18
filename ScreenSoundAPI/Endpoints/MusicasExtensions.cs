@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ScreenSound.API.Converters;
-using ScreenSound.API.Requests.Musica;
 using ScreenSound.Shared.Dados.Banco;
+using ScreenSound.Shared.DTOs.Requests.Musica;
 using ScreenSound.Shared.Modelos.Modelos;
 
 namespace ScreenSound.API.Endpoints;
@@ -32,9 +32,9 @@ public static class MusicasExtensions
         app.MapPost("/Musicas", ([FromServices] DAL<Musica> dal, [FromServices] DAL<Genero> dalGenero, [FromBody] MusicaRequest musicaRequest) =>
         {
             var musica = new Musica(
-                musicaRequest.Nome, 
-                musicaRequest.AnoLancamento, 
-                musicaRequest.ArtistaId, 
+                musicaRequest.Nome,
+                musicaRequest.AnoLancamento,
+                musicaRequest.ArtistaId,
                 GeneroConverter.GeneroRequestConverter(musicaRequest.Generos, dalGenero) ?? []);
 
             dal.Adicionar(musica);

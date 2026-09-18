@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ScreenSound.API.Converters;
-using ScreenSound.API.Requests.Artista;
-using ScreenSound.API.Responses;
 using ScreenSound.Shared.Dados.Banco;
+using ScreenSound.Shared.DTOs.Requests.Artista;
 using ScreenSound.Shared.Modelos.Modelos;
 
 namespace ScreenSound.API.Endpoints;
@@ -30,9 +29,22 @@ public static class ArtistasExtensions
             return Results.Ok(response);
         });
 
-        app.MapPost("/Artistas", ([FromServices] DAL<Artista> dal, [FromBody] ArtistaRequest artistaRequest) =>
+        app.MapPost("/Artistas", async ([FromServices] DAL<Artista> dal, [FromServices] IHostEnvironment env, [FromBody] ArtistaRequest artistaRequest) =>
         {
-            var artista = new Artista(artistaRequest.Nome, artistaRequest.Bio);
+            var nome = artistaRequest.Nome.Trim();
+            var imagemArtista = DateTime.Now.ToString("ddMMyyyyhhss") + "." + nome + ".jpeg";
+
+            var path = Path.Combine(env.ContentRootPath, "wwwroot", "FotosPerfil", imagemArtista);
+
+            using var ms = new MemoryStream(Convert.FromBase64String(artistaRequest.FotoPerfil!));
+            using var fs = new FileStream(path, FileMode.Create);
+
+            await ms.CopyToAsync(fs);
+
+            var artista = new Artista(artistaRequest.Nome, artistaRequest.Bio)
+            {
+                FotoPerfil = $"/FotosPerfil/{imagemArtista}"
+            };
 
             dal.Adicionar(artista);
 

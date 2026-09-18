@@ -34,6 +34,8 @@ var app = builder.Build();
 app.UseRouting();
 app.UseCors("BlazorWasmPolicy");
 
+app.UseStaticFiles();
+
 app.AddEndpointsArtistas();
 app.AddEndpointsMusicas();
 app.AddEndpointGeneros();

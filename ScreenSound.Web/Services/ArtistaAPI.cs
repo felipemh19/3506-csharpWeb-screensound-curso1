@@ -1,5 +1,5 @@
-﻿using ScreenSound.Web.Requests;
-using ScreenSound.Web.Responses;
+﻿using ScreenSound.Shared.DTOs.Requests.Artista;
+using ScreenSound.Shared.DTOs.Responses;
 using System.Net.Http.Json;
 
 namespace ScreenSound.Web.Services

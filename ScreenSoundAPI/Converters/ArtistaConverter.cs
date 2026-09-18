@@ -1,4 +1,4 @@
-﻿using ScreenSound.API.Responses;
+﻿using ScreenSound.Shared.DTOs.Responses;
 using ScreenSound.Shared.Modelos.Modelos;
 
 namespace ScreenSound.API.Converters;
@@ -12,6 +12,6 @@ internal class ArtistaConverter
 
     internal static ArtistaResponse EntityToResponse(Artista artista)
     {
-        return new ArtistaResponse(artista.Id, artista.Nome, artista.Bio);
+        return new ArtistaResponse(artista.Id, artista.Nome, artista.Bio, artista.FotoPerfil);
     }
 }
