@@ -10,7 +10,7 @@ public static class MusicasExtensions
 {
     public static void AddEndpointsMusicas(this WebApplication app)
     {
-        app.MapGet("/Musicas", ([FromServices] DAL<Musica> dal) =>
+        app.MapGet("/musicas", ([FromServices] DAL<Musica> dal) =>
         {
             var musicas = dal.Listar();
 
@@ -18,7 +18,7 @@ public static class MusicasExtensions
             return Results.Ok(response);
         });
 
-        app.MapGet("/Musicas/{nome}", ([FromServices] DAL<Musica> dal, string nome) =>
+        app.MapGet("/musicas/{nome}", ([FromServices] DAL<Musica> dal, string nome) =>
         {
             var musica = dal.RecuperarPor(m => m.Nome.ToUpper().Equals(nome.ToUpper()));
 
@@ -29,7 +29,7 @@ public static class MusicasExtensions
             return Results.Ok(response);
         });
 
-        app.MapPost("/Musicas", ([FromServices] DAL<Musica> dal, [FromServices] DAL<Genero> dalGenero, [FromBody] MusicaRequest musicaRequest) =>
+        app.MapPost("/musicas", ([FromServices] DAL<Musica> dal, [FromServices] DAL<Genero> dalGenero, [FromBody] MusicaRequest musicaRequest) =>
         {
             var musica = new Musica(
                 musicaRequest.Nome,
@@ -40,10 +40,10 @@ public static class MusicasExtensions
             dal.Adicionar(musica);
 
             var response = MusicaConverter.EntityToResponse(musica);
-            return Results.Created($"/Musicas/{response.Id}", response);
+            return Results.Created($"/musicas/{response.Id}", response);
         });
 
-        app.MapPut("/Musicas/{id}", ([FromServices] DAL<Musica> dal, int id, [FromBody] MusicaRequestEdit musicaRequestEdit) =>
+        app.MapPut("/musicas/{id}", ([FromServices] DAL<Musica> dal, int id, [FromBody] MusicaRequestEdit musicaRequestEdit) =>
         {
             if (id != musicaRequestEdit.Id)
                 return Results.BadRequest();
@@ -62,7 +62,7 @@ public static class MusicasExtensions
             return Results.Ok(response);
         });
 
-        app.MapDelete("/Musicas/{id}", ([FromServices] DAL<Musica> dal, int id) =>
+        app.MapDelete("/musicas/{id}", ([FromServices] DAL<Musica> dal, int id) =>
         {
             var musica = dal.RecuperarPor(m => m.Id == id);
 

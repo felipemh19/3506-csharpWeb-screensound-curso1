@@ -1,5 +1,82 @@
-﻿<h3>CadastrarMusica</h3>
+﻿@page "/musicas/cadastrar"
+@inject MusicaAPI musicaAPI
+@inject ArtistaAPI artistaAPI
+@inject GeneroAPI generoAPI
+@inject NavigationManager navigationManager
+
+<MudPaper Class="px-8 pt-2 pb-4 mx-12 my-8">
+
+    <MudText Class="mt-8" Typo="Typo.h4">Cadastro de músicas</MudText>
+
+    <MudForm>
+        <MudTextField Class="mt-4" T="string" Label="Nome"
+                      @bind-Value="nome"
+                      Variant="Variant.Outlined"
+                      Required="true"
+                      RequiredError="Campo obrigatório" />
+
+        <MudNumericField Class="mt-4" T="int" Label="Ano de lançamento"
+                      @bind-Value="anoLancamento"
+                      Variant="Variant.Outlined"
+                      Required="true"
+                      RequiredError="Campo obrigatório" />
+                      
+        <MudSelect Class="mt-4" T="ArtistaResponse" Label="Artista" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+            @if (artistas is not null)
+            {
+                @foreach (var artista in artistas)
+                {
+                    <MudSelectItem Value="artista">@artista.Nome</MudSelectItem>
+                }
+            }
+        </MudSelect>
+
+        <MudSelect Class="mt-4" T="GeneroResponse" Label="Gênero" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+            @if (generos is not null)
+            {
+                @foreach (var genero in generos)
+                {
+                    <MudSelectItem Value="genero">@genero.Nome</MudSelectItem>
+                }
+            }
+        </MudSelect>
+
+        <MudStack Row Class="d-flex justify-end mt-4">
+            <MudButton Variant="Variant.Outlined"
+                       Color="Color.Primary"
+                       OnClick="@Cancel">
+                Cancelar
+            </MudButton>
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       OnClick="@CreateMusicaAsync">
+                Cadastrar
+            </MudButton>
+        </MudStack>
+    </MudForm>
+</MudPaper>
 
 @code {
+    private string? nome;
+    private int anoLancamento;
+    private string teste;
 
+    private ICollection<ArtistaResponse>? artistas;
+    private ICollection<GeneroResponse>? generos;
+
+    protected override async Task OnInitializedAsync()
+    {
+        artistas = await artistaAPI.GetArtistasAsync();
+        generos = await generoAPI.GetGenerosAsync();
+    }
+
+    private void CreateMusicaAsync()
+    {
+        
+    }
+
+    private void Cancel()
+    {
+        navigationManager.NavigateTo("/musicas");
+    }
 }

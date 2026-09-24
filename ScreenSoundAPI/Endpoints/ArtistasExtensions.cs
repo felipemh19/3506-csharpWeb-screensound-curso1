@@ -10,7 +10,7 @@ public static class ArtistasExtensions
 {
     public static void AddEndpointsArtistas(this WebApplication app)
     {
-        app.MapGet("/Artistas", ([FromServices] DAL<Artista> dal) =>
+        app.MapGet("/artistas", ([FromServices] DAL<Artista> dal) =>
         {
             var artistas = dal.Listar();
 
@@ -18,7 +18,7 @@ public static class ArtistasExtensions
             return Results.Ok(response);
         });
 
-        app.MapGet("/Artistas/{nome}", ([FromServices] DAL<Artista> dal, string nome) =>
+        app.MapGet("/artistas/{nome}", ([FromServices] DAL<Artista> dal, string nome) =>
         {
             var artista = dal.RecuperarPor(a => a.Nome.ToUpper().Equals(nome.ToUpper()));
 
@@ -29,7 +29,7 @@ public static class ArtistasExtensions
             return Results.Ok(response);
         });
 
-        app.MapPost("/Artistas", async ([FromServices] DAL<Artista> dal, [FromServices] IHostEnvironment env, [FromBody] ArtistaRequest artistaRequest) =>
+        app.MapPost("/artistas", async ([FromServices] DAL<Artista> dal, [FromServices] IHostEnvironment env, [FromBody] ArtistaRequest artistaRequest) =>
         {
             var nome = artistaRequest.Nome.Trim();
             var imagemArtista = DateTime.Now.ToString("ddMMyyyyhhss") + "." + nome + ".jpeg";
@@ -52,7 +52,7 @@ public static class ArtistasExtensions
             return Results.Created($"/Artistas/{response.Id}", response);
         });
 
-        app.MapPut("/Artistas/{id}", ([FromServices] DAL<Artista> dal, int id, [FromBody] ArtistaRequestEdit artistaRequestEdit) =>
+        app.MapPut("/artistas/{id}", ([FromServices] DAL<Artista> dal, int id, [FromBody] ArtistaRequestEdit artistaRequestEdit) =>
         {
             if (id != artistaRequestEdit.Id)
                 return Results.BadRequest();
@@ -70,7 +70,7 @@ public static class ArtistasExtensions
             return Results.Ok(response);
         });
 
-        app.MapDelete("/Artistas/{id}", ([FromServices] DAL<Artista> dal, int id) =>
+        app.MapDelete("/artistas/{id}", ([FromServices] DAL<Artista> dal, int id) =>
         {
             var artista = dal.RecuperarPor(a => a.Id == id);
             if (artista is null)
