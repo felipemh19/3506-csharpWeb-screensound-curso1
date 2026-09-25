@@ -21,7 +21,7 @@
                       Required="true"
                       RequiredError="Campo obrigatório" />
                       
-        <MudSelect Class="mt-4" T="ArtistaResponse" Label="Artista" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+        <MudSelect Class="mt-4" T="ArtistaResponse" Label="Artista" Variant="Variant.Outlined">
             @if (artistas is not null)
             {
                 @foreach (var artista in artistas)
@@ -31,7 +31,7 @@
             }
         </MudSelect>
 
-        <MudSelect Class="mt-4" T="GeneroResponse" Label="Gênero" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+        <MudSelect Class="mt-4" T="GeneroResponse" Label="Gênero" Variant="Variant.Outlined">
             @if (generos is not null)
             {
                 @foreach (var genero in generos)
