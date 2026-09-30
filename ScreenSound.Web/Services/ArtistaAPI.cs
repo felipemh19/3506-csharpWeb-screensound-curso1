@@ -25,7 +25,7 @@ public class ArtistaAPI
 
     public async Task CreateArtistaAsync(ArtistaRequest artista)
     {
-        await _httpClient.PostAsJsonAsync($"artistas", artista);
+        await _httpClient.PostAsJsonAsync("artistas", artista);
     }
 
     public async Task UpdateAsystaAsync(ArtistaRequestEdit artista)

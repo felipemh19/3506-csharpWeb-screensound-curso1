@@ -35,7 +35,7 @@ public static class MusicasExtensions
                 musicaRequest.Nome,
                 musicaRequest.AnoLancamento,
                 musicaRequest.ArtistaId,
-                GeneroConverter.GeneroRequestConverter(musicaRequest.Generos, dalGenero) ?? []);
+                GeneroConverter.GetGenerosById(musicaRequest.Generos, dalGenero) ?? []);
 
             dal.Adicionar(musica);
 

@@ -21,7 +21,7 @@
                       Required="true"
                       RequiredError="Campo obrigatório" />
                       
-        <MudSelect Class="mt-4" T="ArtistaResponse" Label="Artista" Variant="Variant.Outlined">
+        <MudSelect Class="mt-4" T="ArtistaResponse" Label="Artista" Variant="Variant.Outlined" ValueChanged="@ArtistaSelected">
             @if (artistas is not null)
             {
                 @foreach (var artista in artistas)
@@ -31,7 +31,7 @@
             }
         </MudSelect>
 
-        <MudSelect Class="mt-4" T="GeneroResponse" Label="Gênero" Variant="Variant.Outlined">
+        <MudSelect Class="mt-4" T="GeneroResponse" Label="Gênero" Variant="Variant.Outlined" MultiSelection="true" @bind-SelectedValues="generosSelecionados">
             @if (generos is not null)
             {
                 @foreach (var genero in generos)
@@ -59,10 +59,14 @@
 @code {
     private string? nome;
     private int anoLancamento;
-    private string teste;
 
     private ICollection<ArtistaResponse>? artistas;
     private ICollection<GeneroResponse>? generos;
+
+    private IReadOnlyCollection<GeneroResponse>? generosSelecionados;
+
+    private List<int>? GenerosSelecionados { get; set; } = [];
+    private ArtistaResponse? ArtistaMusica { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -70,9 +74,39 @@
         generos = await generoAPI.GetGenerosAsync();
     }
 
-    private void CreateMusicaAsync()
+    private void ArtistaSelected(ArtistaResponse artista)
     {
-        
+        ArtistaMusica = artista;
+    }
+
+    private void GeneroSelected(GeneroResponse genero)
+    {
+        if (GenerosSelecionados is not null)
+        {
+            if (!GenerosSelecionados.Contains(genero.Id))
+            {
+                GenerosSelecionados.Add(genero.Id);
+            }
+        }
+    }
+
+    private async Task CreateMusicaAsync()
+    {
+        if (GenerosSelecionados is not null && generosSelecionados is not null)
+        {
+            foreach (var genero in generosSelecionados)
+            {
+                if (!GenerosSelecionados.Contains(genero.Id))
+                {
+                    GenerosSelecionados.Add(genero.Id);
+                }
+            }
+        }
+
+        var musica = new MusicaRequest(nome!, anoLancamento, ArtistaMusica!.Id, GenerosSelecionados!);
+        await musicaAPI.CreateMusicaAsync(musica);
+
+        navigationManager.NavigateTo("/musicas");
     }
 
     private void Cancel()

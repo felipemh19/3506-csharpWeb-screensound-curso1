@@ -17,23 +17,21 @@ public class GeneroConverter
         return new GeneroResponse(genero.Id, genero.Nome, genero.Descricao);
     }
 
-    internal static ICollection<Genero> GeneroRequestConverter(ICollection<GeneroRequest> generos, DAL<Genero> dalGenero)
+    internal static ICollection<Genero> GetGenerosById(ICollection<int> generos, DAL<Genero> dalGenero)
     {
         var listaGeneros = new List<Genero>();
 
-        foreach (var item in generos)
+        if (generos is not null)
         {
-            var entity = RequestToEntity(item);
-            var genero = dalGenero.RecuperarPor(a => a.Nome.ToUpper().Equals(item.Nome.ToUpper()));
+            foreach (var item in generos)
+            {
+                var genero = dalGenero.RecuperarPor(a => a.Id == item);
 
-            if (genero is not null)
-            {
-                listaGeneros.Add(genero);
-            }
-            else
-            {
-                listaGeneros.Add(entity);
-            }
+                if (genero is not null)
+                {
+                    listaGeneros.Add(genero);
+                }
+            } 
         }
 
         return listaGeneros;

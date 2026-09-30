@@ -31,7 +31,6 @@ public class Musica : Base
         return @$"Id: {Id}
         Nome: {Nome}
         Ano de lançamento: {AnoLancamento}
-        Artista: {Artista?.Nome}";
-        
+        Artista: {Artista?.Nome}";        
     }
 }

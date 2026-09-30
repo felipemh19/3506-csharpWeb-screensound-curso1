@@ -1,4 +1,5 @@
-﻿using ScreenSound.Shared.DTOs.Responses;
+﻿using ScreenSound.Shared.DTOs.Requests.Musica;
+using ScreenSound.Shared.DTOs.Responses;
 using System.Net.Http.Json;
 
 namespace ScreenSound.Web.Services;
@@ -20,5 +21,10 @@ public class MusicaAPI
     public async Task<MusicaResponse?> GetMusicaPorNomeAsync(string nome)
     {
         return await _httpClient.GetFromJsonAsync<MusicaResponse>($"musicas/{nome}");
+    }
+
+    public async Task CreateMusicaAsync(MusicaRequest musica)
+    {
+        await _httpClient.PostAsJsonAsync("musicas", musica);
     }
 }
