@@ -79,17 +79,6 @@
         ArtistaMusica = artista;
     }
 
-    private void GeneroSelected(GeneroResponse genero)
-    {
-        if (GenerosSelecionados is not null)
-        {
-            if (!GenerosSelecionados.Contains(genero.Id))
-            {
-                GenerosSelecionados.Add(genero.Id);
-            }
-        }
-    }
-
     private async Task CreateMusicaAsync()
     {
         if (GenerosSelecionados is not null && generosSelecionados is not null)

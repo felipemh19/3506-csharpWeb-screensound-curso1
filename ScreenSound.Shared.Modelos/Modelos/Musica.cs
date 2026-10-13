@@ -7,7 +7,7 @@ public class Musica : Base
         Nome = nome;
     }
 
-    public Musica(string nome, int? anoLancamento, int? artistaId, ICollection<Genero> generos)
+    public Musica(string nome, int anoLancamento, int? artistaId, ICollection<Genero> generos)
     {
         Nome = nome;
         AnoLancamento = anoLancamento;
@@ -16,7 +16,7 @@ public class Musica : Base
     }
 
     public string Nome { get; set; }
-    public int? AnoLancamento { get; set; }
+    public int AnoLancamento { get; set; }
     public int? ArtistaId { get; set; }
     public virtual Artista? Artista { get; set; }
     public virtual ICollection<Genero> Generos { get; set; } = [];

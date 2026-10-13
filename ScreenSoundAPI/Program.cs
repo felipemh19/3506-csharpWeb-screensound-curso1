@@ -1,15 +1,13 @@
-using Microsoft.AspNetCore.Mvc;
 using ScreenSound.API.Endpoints;
 using ScreenSound.Shared.Dados.Banco;
-using ScreenSound.Shared.Modelos.Modelos;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ScreenSoundContext>();
-builder.Services.AddTransient<DAL<Artista>>();
-builder.Services.AddTransient<DAL<Musica>>();
-builder.Services.AddTransient<DAL<Genero>>();
+builder.Services.AddTransient<MusicaDAL>();
+builder.Services.AddTransient<ArtistaDAL>();
+builder.Services.AddTransient<GeneroDAL>();
 
 builder.Services.AddCors(options =>
 {
@@ -25,7 +23,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options => 
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
 {
     options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });

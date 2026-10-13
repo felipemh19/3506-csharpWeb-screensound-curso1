@@ -12,6 +12,6 @@ internal class MusicaConverter
 
     internal static MusicaResponse EntityToResponse(Musica musica)
     {
-        return new MusicaResponse(musica.Id, musica.Nome, musica.AnoLancamento, musica.ArtistaId);
+        return new MusicaResponse(musica.Id, musica.Nome, musica.AnoLancamento, musica.ArtistaId, musica.Artista?.Nome);
     }
 }

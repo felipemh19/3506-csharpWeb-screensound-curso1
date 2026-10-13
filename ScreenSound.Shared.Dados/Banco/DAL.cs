@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ScreenSound.Shared.Modelos.Modelos;
 
 namespace ScreenSound.Shared.Dados.Banco;
 
 public class DAL<T> 
-    where T : class
+    where T : Base
 {
     protected readonly ScreenSoundContext _context;
     private readonly DbSet<T> _dbSet;
@@ -14,35 +15,35 @@ public class DAL<T>
         _dbSet = _context.Set<T>();
     }
 
-    public IEnumerable<T> Listar()
+    public virtual IEnumerable<T> Listar()
     {
         return [.. _dbSet];
     }
 
-    public void Adicionar(T objeto)
+    public virtual void Adicionar(T objeto)
     {
         _dbSet.Add(objeto);
         _context.SaveChanges();
     }
 
-    public void Atualizar(T objeto)
+    public virtual void Atualizar(T objeto)
     {
         _dbSet.Update(objeto);
         _context.SaveChanges();
     }
 
-    public void Deletar(T objeto)
+    public virtual void Deletar(T objeto)
     {
         _dbSet.Remove(objeto);
         _context.SaveChanges();
     }
 
-    public T? RecuperarPor(Func<T, bool> condicao)
+    public virtual T? RecuperarPor(Func<T, bool> condicao)
     {
         return _dbSet.FirstOrDefault(condicao);
     }
 
-    public IEnumerable<T> ListarPor(Func<T, bool> condicao)
+    public virtual IEnumerable<T> ListarPor(Func<T, bool> condicao)
     {
         return [.. _dbSet.Where(condicao)];
     }

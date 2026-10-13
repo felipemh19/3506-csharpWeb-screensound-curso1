@@ -1,0 +1,79 @@
+﻿@page "/musicas/editar/{NomeMusica}"
+@inject MusicaAPI musicaAPI
+@inject ArtistaAPI artistaAPI
+@inject GeneroAPI generoAPI
+@inject NavigationManager navigationManager
+
+<MudPaper Class="px-8 pt-2 pb-4 mx-12 my-8">
+
+    <MudText Class="mt-8" Typo="Typo.h4">Edição de músicas</MudText>
+
+    <MudForm>
+        <MudTextField Class="mt-4" T="string" Label="Nome"
+                      @bind-Value="nome"
+                      Variant="Variant.Outlined"
+                      Required="true"
+                      RequiredError="Campo obrigatório" />
+
+        <MudNumericField Class="mt-4" T="int" Label="Ano de lançamento"
+                      @bind-Value="anoLancamento"
+                      Variant="Variant.Outlined"
+                      Required="true"
+                      RequiredError="Campo obrigatório" />
+
+        <MudStack Row Class="d-flex justify-end mt-4">
+            <MudButton Variant="Variant.Outlined"
+                       Color="Color.Primary"
+                       OnClick="@Cancel">
+                Cancelar
+            </MudButton>
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Error"
+                       OnClick="@DeleteMusicaAsync">
+                Excluir
+            </MudButton>
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       OnClick="@UpdateMusicaAsync">
+                Cadastrar
+            </MudButton>
+        </MudStack>
+    </MudForm>
+</MudPaper>
+
+@code {
+    private string? nome;
+    private int anoLancamento;
+
+    [Parameter]
+    public string? NomeMusica { get; set; }
+    public MusicaResponse? Musica { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        Musica = await musicaAPI.GetMusicaPorNomeAsync(NomeMusica!);
+
+        if (Musica is not null)
+        {
+            nome = Musica.Nome;
+            anoLancamento = Musica.AnoLancamento;
+        }
+    }
+
+    private async Task UpdateMusicaAsync()
+    {
+        var musica = new MusicaRequestEdit(Musica!.Id, nome!, anoLancamento);
+        await musicaAPI.UpdateMusicaAsync(musica);
+    }
+
+    private async Task DeleteMusicaAsync()
+    {
+        await musicaAPI.DeleteMusicaAsync(Musica!.Id);
+        navigationManager.NavigateTo("/musicas");
+    }
+
+    private void Cancel()
+    {
+        navigationManager.NavigateTo("/musicas");
+    }
+}

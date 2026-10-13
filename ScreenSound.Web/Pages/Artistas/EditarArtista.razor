@@ -63,7 +63,7 @@
 
     private async Task UpdateArtistaAsync()
     {
-        await artistaAPI.UpdateAsystaAsync(new ArtistaRequestEdit(Artista!.Id, nome!, bio!, fotoPerfil));
+        await artistaAPI.UpdateArtistaAsync(new ArtistaRequestEdit(Artista!.Id, nome!, bio!, fotoPerfil));
     }
 
     private async Task DeleteArtistaAsync()

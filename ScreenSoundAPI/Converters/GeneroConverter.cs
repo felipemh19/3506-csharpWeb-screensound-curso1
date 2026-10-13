@@ -17,7 +17,7 @@ public class GeneroConverter
         return new GeneroResponse(genero.Id, genero.Nome, genero.Descricao);
     }
 
-    internal static ICollection<Genero> GetGenerosById(ICollection<int> generos, DAL<Genero> dalGenero)
+    internal static ICollection<Genero> GetGenerosById(ICollection<int> generos, GeneroDAL dalGenero)
     {
         var listaGeneros = new List<Genero>();
 

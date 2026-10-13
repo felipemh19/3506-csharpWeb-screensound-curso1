@@ -10,7 +10,7 @@ public static class GeneroExtensions
 {
     public static void AddEndpointGeneros(this WebApplication app)
     {
-        app.MapGet("/generos", ([FromServices] DAL<Genero> dal) =>
+        app.MapGet("/generos", ([FromServices] GeneroDAL dal) =>
         {
             var generos = dal.Listar();
 
@@ -18,7 +18,7 @@ public static class GeneroExtensions
             return Results.Ok(generos);
         });
 
-        app.MapGet("/generos/{nome}", (int id, [FromServices] DAL<Genero> dal, string nome) =>
+        app.MapGet("/generos/{nome}", (int id, [FromServices] GeneroDAL dal, string nome) =>
         {
             var genero = dal.RecuperarPor(x => x.Nome.ToUpper().Equals(nome.ToUpper()));
 
@@ -29,7 +29,7 @@ public static class GeneroExtensions
             return Results.Ok(response);
         });
 
-        app.MapPost("/generos", ([FromServices] DAL<Genero> dal, [FromBody] GeneroRequest generoRequest) =>
+        app.MapPost("/generos", ([FromServices] GeneroDAL dal, [FromBody] GeneroRequest generoRequest) =>
         {
             var genero = new Genero(generoRequest.Nome, generoRequest.Descricao);
 
@@ -39,7 +39,7 @@ public static class GeneroExtensions
             return Results.Created($"/generos/{genero.Id}", response);
         });
 
-        app.MapDelete("/generos/{id}", ([FromServices] DAL<Genero> dal, int id) =>
+        app.MapDelete("/generos/{id}", ([FromServices] GeneroDAL dal, int id) =>
         {
             var genero = dal.RecuperarPor(x => x.Id == id);
             if (genero is null)

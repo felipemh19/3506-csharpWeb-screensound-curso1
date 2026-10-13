@@ -6,12 +6,16 @@
         </CardHeaderContent>
     </MudCardHeader>
     <MudCardContent>
-        <MudText Typo="Typo.body2">Artista/Banda:@Musica!.ArtistaId</MudText>
+        <MudText Typo="Typo.body2">Artista/Banda: @Musica!.NomeArtista</MudText>
     </MudCardContent>
+    <MudButton>
+        <MudLink Href="@($"/musicas/editar/{Musica!.Nome}")" Class="text-decoration-none text-white">
+            Detalhes
+        </MudLink>
+    </MudButton>
 </MudCard>
 
 @code {
     [Parameter]
     public MusicaResponse? Musica { get; set; }
-
 }
