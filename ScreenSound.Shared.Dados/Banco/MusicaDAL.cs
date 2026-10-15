@@ -7,9 +7,4 @@ public class MusicaDAL : DAL<Musica>
 {
     public MusicaDAL(ScreenSoundContext context) 
         : base(context) { }
-
-    override public IEnumerable<Musica> Listar()
-    {
-        return [.. _context.Musicas.Include(m => m.Artista)];
-    }
 }

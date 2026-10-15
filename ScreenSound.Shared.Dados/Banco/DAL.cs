@@ -15,9 +15,9 @@ public class DAL<T>
         _dbSet = _context.Set<T>();
     }
 
-    public virtual IEnumerable<T> Listar()
+    public virtual IQueryable<T> Listar()
     {
-        return [.. _dbSet];
+        return _dbSet;
     }
 
     public virtual void Adicionar(T objeto)

@@ -21,6 +21,26 @@
                       Required="true"
                       RequiredError="Campo obrigatório" />
 
+        <MudSelect Class="mt-4" T="ArtistaResponse" Label="Artista" Variant="Variant.Outlined" Value="ArtistaMusica" ValueChanged="@ArtistaSelected">
+            @if (artistas is not null)
+            {
+                @foreach (var artista in artistas)
+                {
+                    <MudSelectItem Value="artista">@artista.Nome</MudSelectItem>
+                }
+            }
+        </MudSelect>
+
+        @* <MudSelect Class="mt-4" T="GeneroResponse" Label="Gênero" Variant="Variant.Outlined" MultiSelection="true" @bind-SelectedValues="generosSelecionados">
+            @if (generos is not null)
+            {
+                @foreach (var genero in generos)
+                {
+                    <MudSelectItem Value="genero">@genero.Nome</MudSelectItem>
+                }
+            }
+        </MudSelect> *@
+
         <MudStack Row Class="d-flex justify-end mt-4">
             <MudButton Variant="Variant.Outlined"
                        Color="Color.Primary"
@@ -35,7 +55,7 @@
             <MudButton Variant="Variant.Filled"
                        Color="Color.Primary"
                        OnClick="@UpdateMusicaAsync">
-                Cadastrar
+                Salvar
             </MudButton>
         </MudStack>
     </MudForm>
@@ -44,25 +64,45 @@
 @code {
     private string? nome;
     private int anoLancamento;
+    private int? artistaId;
 
     [Parameter]
     public string? NomeMusica { get; set; }
     public MusicaResponse? Musica { get; set; }
-    
+
+    private ICollection<ArtistaResponse>? artistas;
+    private ICollection<GeneroResponse>? generos;
+
+    private IReadOnlyCollection<GeneroResponse>? generosSelecionados;
+
+    private List<int>? GenerosSelecionados { get; set; } = [];
+    private ArtistaResponse? ArtistaMusica { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
+        artistas = await artistaAPI.GetArtistasAsync();
+        generos = await generoAPI.GetGenerosAsync();
+
         Musica = await musicaAPI.GetMusicaPorNomeAsync(NomeMusica!);
 
         if (Musica is not null)
         {
             nome = Musica.Nome;
             anoLancamento = Musica.AnoLancamento;
+            artistaId = Musica.ArtistaId;
+
+            ArtistaMusica = artistas?.FirstOrDefault(x => x.Id == artistaId);
         }
+    }
+
+    private void ArtistaSelected(ArtistaResponse artista)
+    {
+        ArtistaMusica = artista;
     }
 
     private async Task UpdateMusicaAsync()
     {
-        var musica = new MusicaRequestEdit(Musica!.Id, nome!, anoLancamento);
+        var musica = new MusicaRequestEdit(Musica!.Id, nome!, anoLancamento, ArtistaMusica.Id);
         await musicaAPI.UpdateMusicaAsync(musica);
     }
 

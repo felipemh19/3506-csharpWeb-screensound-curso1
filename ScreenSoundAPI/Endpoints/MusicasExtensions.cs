@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ScreenSound.API.Converters;
 using ScreenSound.Shared.Dados.Banco;
 using ScreenSound.Shared.DTOs.Requests.Musica;
@@ -12,10 +13,14 @@ public static class MusicasExtensions
     {
         app.MapGet("/musicas", ([FromServices] MusicaDAL dal) =>
         {
-            var musicas = dal.Listar();
+            var musicas = dal.Listar().Select(m => new
+            {
+                m.Id,
+                m.Nome,
+                NomeArtista = m.Artista!.Nome,
+            }).ToList();
 
-            var response = MusicaConverter.EntityListToResponseList(musicas);
-            return Results.Ok(response);
+            return Results.Ok(musicas);
         });
 
         app.MapGet("/musicas/{nome}", ([FromServices] MusicaDAL dal, string nome) =>
@@ -55,6 +60,7 @@ public static class MusicasExtensions
 
             musicaExistente.Nome = musicaRequestEdit.Nome;
             musicaExistente.AnoLancamento = musicaRequestEdit.AnoLancamento;
+            musicaExistente.ArtistaId = musicaRequestEdit.ArtistaId;
 
             dal.Atualizar(musicaExistente);
 

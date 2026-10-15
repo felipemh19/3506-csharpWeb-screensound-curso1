@@ -2,6 +2,8 @@
 
 public class Musica : Base
 {
+    public Musica() { }
+
     public Musica(string nome)
     {
         Nome = nome;
