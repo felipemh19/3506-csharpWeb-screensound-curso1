@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using ScreenSound.API.Converters;
 using ScreenSound.Shared.Dados.Banco;
 using ScreenSound.Shared.DTOs.Requests.Musica;
+using ScreenSound.Shared.DTOs.Responses;
 using ScreenSound.Shared.Modelos.Modelos;
 
 namespace ScreenSound.API.Endpoints;
@@ -25,13 +25,21 @@ public static class MusicasExtensions
 
         app.MapGet("/musicas/{nome}", ([FromServices] MusicaDAL dal, string nome) =>
         {
-            var musica = dal.RecuperarPor(m => m.Nome.ToUpper().Equals(nome.ToUpper()));
+            var musica = dal.Listar()
+            .Where(m => m.Nome.ToUpper().Equals(nome.ToUpper()))
+            .Select(m => new MusicaResponse(
+                m.Id,
+                m.Nome,
+                m.AnoLancamento,
+                m.ArtistaId,
+                m.Artista!.Nome,
+                m.Generos.Select(g => g.Id))
+            ).FirstOrDefault();
 
             if (musica is null)
                 return Results.NotFound();
 
-            var response = MusicaConverter.EntityToResponse(musica);
-            return Results.Ok(response);
+            return Results.Ok(musica);
         });
 
         app.MapPost("/musicas", ([FromServices] MusicaDAL dal, [FromServices] GeneroDAL dalGenero, [FromBody] MusicaRequest musicaRequest) =>
