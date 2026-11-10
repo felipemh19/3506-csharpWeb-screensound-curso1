@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ScreenSound.Shared.Modelos.Modelos;
 
 namespace ScreenSound.Shared.Dados.Banco;
 
-public class ScreenSoundContext : DbContext
+public class ScreenSoundContext : IdentityDbContext<PessoaComAcesso, PerfilDeAcesso, int>
 {
     private readonly string _connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ScreenSoundV0;Integrated Security=True;Encrypt=True;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False;Command Timeout=30";
 
@@ -18,6 +19,8 @@ public class ScreenSoundContext : DbContext
             .HasMany(m => m.Generos)
             .WithMany(g => g.Musicas)
             .UsingEntity(j => j.ToTable("MusicasGeneros"));
+
+        base.OnModelCreating(modelBuilder);
     }
 
     public DbSet<Artista> Artistas { get; set; }

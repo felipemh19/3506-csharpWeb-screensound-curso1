@@ -5,20 +5,19 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ScreenSoundContext>();
-builder.Services.AddTransient<MusicaDAL>();
-builder.Services.AddTransient<ArtistaDAL>();
-builder.Services.AddTransient<GeneroDAL>();
+builder.Services.AddScoped<MusicaDAL>();
+builder.Services.AddScoped<ArtistaDAL>();
+builder.Services.AddScoped<GeneroDAL>();
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("BlazorWasmPolicy", policy =>
-    {
-        policy.WithOrigins("https://localhost:7019")
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials();
-    });
-});
+builder.Services.AddCors(
+    options => options.AddPolicy(
+        "wasm",
+        policy => policy.WithOrigins([builder.Configuration["BackendUrl"] ?? "https://localhost:7191",
+            builder.Configuration["FrontendUrl"] ?? "https://localhost:7019"])
+            .AllowAnyMethod()
+            .SetIsOriginAllowed(pol => true)
+            .AllowAnyHeader()
+            .AllowCredentials()));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -30,7 +29,7 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =
 var app = builder.Build();
 
 app.UseRouting();
-app.UseCors("BlazorWasmPolicy");
+app.UseCors("wasm");
 
 app.UseStaticFiles();
 

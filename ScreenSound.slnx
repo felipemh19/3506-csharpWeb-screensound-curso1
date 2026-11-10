@@ -3,6 +3,5 @@
   <Project Path="ScreenSound.Shared.DTOs/ScreenSound.Shared.DTOs.csproj" Id="f712ddcf-27bc-45c2-b9cd-a7fb47c3b428" />
   <Project Path="ScreenSound.Shared.Modelos/ScreenSound.Shared.Modelos.csproj" />
   <Project Path="ScreenSound.Web/ScreenSound.Web.csproj" Id="831ae49c-727b-487b-b7a7-499a61d39b4c" />
-  <Project Path="ScreenSound/ScreenSound.csproj" />
   <Project Path="ScreenSoundAPI/ScreenSound.API.csproj" />
 </Solution>
