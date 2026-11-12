@@ -1,10 +1,16 @@
 using ScreenSound.API.Endpoints;
 using ScreenSound.Shared.Dados.Banco;
+using ScreenSound.Shared.Modelos.Modelos;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ScreenSoundContext>();
+
+builder.Services
+    .AddIdentityApiEndpoints<PessoaComAcesso>()
+    .AddEntityFrameworkStores<ScreenSoundContext>();
+
 builder.Services.AddScoped<MusicaDAL>();
 builder.Services.AddScoped<ArtistaDAL>();
 builder.Services.AddScoped<GeneroDAL>();
@@ -36,6 +42,8 @@ app.UseStaticFiles();
 app.AddEndpointsArtistas();
 app.AddEndpointsMusicas();
 app.AddEndpointGeneros();
+
+app.MapGroup("auth").MapIdentityApi<PessoaComAcesso>().WithTags("Autorização");
 
 app.UseSwagger();
 app.UseSwaggerUI();

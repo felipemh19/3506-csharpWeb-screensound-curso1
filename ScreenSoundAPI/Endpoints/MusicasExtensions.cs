@@ -11,7 +11,10 @@ public static class MusicasExtensions
 {
     public static void AddEndpointsMusicas(this WebApplication app)
     {
-        app.MapGet("/musicas", ([FromServices] MusicaDAL dal) =>
+        var musicaGroup = app.MapGroup("/musicas")
+            .WithTags("Músicas");
+
+        musicaGroup.MapGet("/", ([FromServices] MusicaDAL dal) =>
         {
             var musicas = dal.Listar().Select(m => new
             {
@@ -23,7 +26,7 @@ public static class MusicasExtensions
             return Results.Ok(musicas);
         });
 
-        app.MapGet("/musicas/{nome}", ([FromServices] MusicaDAL dal, string nome) =>
+        musicaGroup.MapGet("/{nome}", ([FromServices] MusicaDAL dal, string nome) =>
         {
             var musica = dal.Listar()
             .Where(m => m.Nome.ToUpper().Equals(nome.ToUpper()))
@@ -42,7 +45,7 @@ public static class MusicasExtensions
             return Results.Ok(musica);
         });
 
-        app.MapPost("/musicas", ([FromServices] MusicaDAL dal, [FromServices] GeneroDAL dalGenero, [FromBody] MusicaRequest musicaRequest) =>
+        musicaGroup.MapPost("/", ([FromServices] MusicaDAL dal, [FromServices] GeneroDAL dalGenero, [FromBody] MusicaRequest musicaRequest) =>
         {
             var musica = new Musica(
                 musicaRequest.Nome,
@@ -56,7 +59,7 @@ public static class MusicasExtensions
             return Results.Created($"/musicas/{response.Id}", response);
         });
 
-        app.MapPut("/musicas/{id}", ([FromServices] MusicaDAL dal, int id, [FromBody] MusicaRequestEdit musicaRequestEdit) =>
+        musicaGroup.MapPut("/{id}", ([FromServices] MusicaDAL dal, int id, [FromBody] MusicaRequestEdit musicaRequestEdit) =>
         {
             if (id != musicaRequestEdit.Id)
                 return Results.BadRequest();
@@ -76,7 +79,7 @@ public static class MusicasExtensions
             return Results.Ok(response);
         });
 
-        app.MapDelete("/musicas/{id}", ([FromServices] MusicaDAL dal, int id) =>
+        musicaGroup.MapDelete("/{id}", ([FromServices] MusicaDAL dal, int id) =>
         {
             var musica = dal.RecuperarPor(m => m.Id == id);
 

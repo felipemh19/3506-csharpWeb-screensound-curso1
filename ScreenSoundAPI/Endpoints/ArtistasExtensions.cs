@@ -10,7 +10,10 @@ public static class ArtistasExtensions
 {
     public static void AddEndpointsArtistas(this WebApplication app)
     {
-        app.MapGet("/artistas", ([FromServices] ArtistaDAL dal) =>
+        var artistasGroup = app.MapGroup("/artistas")
+            .WithTags("Artistas");
+
+        artistasGroup.MapGet("/", ([FromServices] ArtistaDAL dal) =>
         {
             var artistas = dal.Listar();
 
@@ -18,7 +21,7 @@ public static class ArtistasExtensions
             return Results.Ok(response);
         });
 
-        app.MapGet("/artistas/{nome}", ([FromServices] ArtistaDAL dal, string nome) =>
+        artistasGroup.MapGet("/{nome}", ([FromServices] ArtistaDAL dal, string nome) =>
         {
             var artista = dal.RecuperarPor(a => a.Nome.ToUpper().Equals(nome.ToUpper()));
 
@@ -29,7 +32,7 @@ public static class ArtistasExtensions
             return Results.Ok(response);
         });
 
-        app.MapPost("/artistas", async ([FromServices] ArtistaDAL dal, [FromServices] IHostEnvironment env, [FromBody] ArtistaRequest artistaRequest) =>
+        artistasGroup.MapPost("/", async ([FromServices] ArtistaDAL dal, [FromServices] IHostEnvironment env, [FromBody] ArtistaRequest artistaRequest) =>
         {
             var nome = artistaRequest.Nome.Trim();
             var imagemArtista = DateTime.Now.ToString("ddMMyyyyhhss") + "." + nome + ".jpeg";
@@ -52,7 +55,7 @@ public static class ArtistasExtensions
             return Results.Created($"/Artistas/{response.Id}", response);
         });
 
-        app.MapPut("/artistas/{id}", ([FromServices] ArtistaDAL dal, int id, [FromBody] ArtistaRequestEdit artistaRequestEdit) =>
+        artistasGroup.MapPut("/{id}", ([FromServices] ArtistaDAL dal, int id, [FromBody] ArtistaRequestEdit artistaRequestEdit) =>
         {
             if (id != artistaRequestEdit.Id)
                 return Results.BadRequest();
@@ -70,7 +73,7 @@ public static class ArtistasExtensions
             return Results.Ok(response);
         });
 
-        app.MapDelete("/artistas/{id}", ([FromServices] ArtistaDAL dal, int id) =>
+        artistasGroup.MapDelete("/{id}", ([FromServices] ArtistaDAL dal, int id) =>
         {
             var artista = dal.RecuperarPor(a => a.Id == id);
             if (artista is null)
