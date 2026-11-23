@@ -12,6 +12,7 @@ public static class MusicasExtensions
     public static void AddEndpointsMusicas(this WebApplication app)
     {
         var musicaGroup = app.MapGroup("/musicas")
+            .RequireAuthorization()
             .WithTags("Músicas");
 
         musicaGroup.MapGet("/", ([FromServices] MusicaDAL dal) =>

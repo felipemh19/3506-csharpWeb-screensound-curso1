@@ -11,6 +11,7 @@ public static class GeneroExtensions
     public static void AddEndpointGeneros(this WebApplication app)
     {
         var generosGroup = app.MapGroup("/generos")
+            .RequireAuthorization()
             .WithTags("Gêneros");
 
         generosGroup.MapGet("/", ([FromServices] GeneroDAL dal) =>

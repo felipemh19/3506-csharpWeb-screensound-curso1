@@ -11,6 +11,8 @@ builder.Services
     .AddIdentityApiEndpoints<PessoaComAcesso>()
     .AddEntityFrameworkStores<ScreenSoundContext>();
 
+builder.Services.AddAuthorization();
+
 builder.Services.AddScoped<MusicaDAL>();
 builder.Services.AddScoped<ArtistaDAL>();
 builder.Services.AddScoped<GeneroDAL>();
@@ -38,6 +40,7 @@ app.UseRouting();
 app.UseCors("wasm");
 
 app.UseStaticFiles();
+app.UseAuthorization();
 
 app.AddEndpointsArtistas();
 app.AddEndpointsMusicas();

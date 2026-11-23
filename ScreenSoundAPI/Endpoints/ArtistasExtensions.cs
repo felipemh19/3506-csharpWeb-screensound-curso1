@@ -11,6 +11,7 @@ public static class ArtistasExtensions
     public static void AddEndpointsArtistas(this WebApplication app)
     {
         var artistasGroup = app.MapGroup("/artistas")
+            .RequireAuthorization()
             .WithTags("Artistas");
 
         artistasGroup.MapGet("/", ([FromServices] ArtistaDAL dal) =>
