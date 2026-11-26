@@ -14,7 +14,7 @@ public class AuthAPI
 
     public async Task<AuthResponse?> LoginAsync(string email, string password)
     {
-        var response = await _httpClient.PostAsJsonAsync("auth/login", new { email, password });
+        var response = await _httpClient.PostAsJsonAsync("auth/login?useCookies=true", new { email, password });
 
         if (response.IsSuccessStatusCode)
         {

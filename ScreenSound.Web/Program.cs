@@ -14,10 +14,12 @@ builder.Services.AddScoped<AuthAPI>();
 builder.Services.AddScoped<ArtistaAPI>();
 builder.Services.AddScoped<MusicaAPI>();
 builder.Services.AddScoped<GeneroAPI>();
+builder.Services.AddScoped<CookieHandler>();
+
 builder.Services.AddHttpClient("API", client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["APIServer:Url"]!);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-});
+}).AddHttpMessageHandler<CookieHandler>();
 
 await builder.Build().RunAsync();
